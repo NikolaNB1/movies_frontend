@@ -1,6 +1,6 @@
 import { useContext, useEffect } from "react";
 import MoviesContext from "../storage/MoviesContext";
-import { getMovies } from "../service/moviesService";
+import { deleteMovieById, getMovies } from "../service/moviesService";
 import { Link } from "react-router-dom";
 
 const ShowMovies = () => {
@@ -11,6 +11,13 @@ const ShowMovies = () => {
       updateMovie(data);
     });
   }, []);
+
+  const handleDelete = (id) => {
+    deleteMovieById(id);
+    getMovies().then(({ data }) => {
+      updateMovie(data);
+    });
+  };
 
   return (
     <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
@@ -38,13 +45,13 @@ const ShowMovies = () => {
                 >
                   Edit
                 </Link>
-                {/* <button
+                <button
                   className="btn btn-outline-danger"
                   type="delete"
-                  onClick={() => handleDelete(post.id)}
+                  onClick={() => handleDelete(movie.id)}
                 >
                   Delete
-                </button> */}
+                </button>
               </div>
             </div>
           </div>
