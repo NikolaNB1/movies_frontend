@@ -1,8 +1,11 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { getMovieById } from "../service/moviesService";
+import UserContext from "../storage/UserContext";
 
 const ShowSingleMovie = () => {
+  const { signedIn } = useContext(UserContext);
+  const navigate = useNavigate();
   const [movie, setMovie] = useState({});
   const { id } = useParams();
 
@@ -11,6 +14,9 @@ const ShowSingleMovie = () => {
       getMovieById(id).then(({ data }) => {
         setMovie(data);
       });
+    }
+    if (!signedIn) {
+      navigate("/login");
     }
   }, [id]);
 
