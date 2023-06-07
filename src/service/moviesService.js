@@ -37,6 +37,10 @@ export const logIn = (email, password) => {
   });
 };
 
+export const logOut = () => {
+  return API.post("/logout");
+};
+
 export const getMovieById = (id) => {
   return API.get(`/movies/${id}`);
 };

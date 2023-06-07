@@ -1,8 +1,10 @@
 import { useState, useContext } from "react";
 import UserContext from "../storage/UserContext";
 import { logIn } from "../service/moviesService";
+import { useNavigate } from "react-router-dom";
 
 const SignIn = () => {
+  const navigate = useNavigate();
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -15,6 +17,7 @@ const SignIn = () => {
     logIn(user.email, user.password).then(({ data }) => {
       signInUser(data);
       localStorage.setItem("access_token", data.authorisation.token);
+      navigate("/movies");
     });
 
     setUser({
@@ -66,7 +69,7 @@ const SignIn = () => {
         <button className="btn btn-primary w-100 py-2" type="submit">
           Sign in
         </button>
-        <p className="mt-5 mb-3 text-body-secondary">&copy; 2017–2023</p>
+        <p className="mt-5 mb-3 text-body-secondary">&copy; 2023</p>
       </form>
     </div>
   );
