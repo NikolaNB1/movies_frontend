@@ -1,6 +1,7 @@
 import { useContext, useEffect } from "react";
 import MoviesContext from "../storage/MoviesContext";
 import { getMovies } from "../service/moviesService";
+import { Link } from "react-router-dom";
 
 const ShowMovies = () => {
   const { movies, updateMovie } = useContext(MoviesContext);
@@ -18,22 +19,26 @@ const ShowMovies = () => {
           <div className="card shadow-sm">
             <div className="card-body bg-light border rounded border">
               <h3 className="card-text">{movie.title}</h3>
-              <div className="mb-1 text-body-secondary">{movie.director}</div>
-              <p className="card-text mb-auto">{movie.release_date}</p>
+              <div className="mb-1 text-body-secondary">
+                Director: {movie.director}
+              </div>
+              <p className="card-text mb-auto">
+                Release date: {movie.release_date}
+              </p>
               <div style={{ display: "flex", justifyContent: "space-evenly" }}>
-                {/* <Link
+                <Link
                   className="btn btn-outline-success"
-                  to={`/post/${post.id}`}
+                  to={`/movies/${movie.id}`}
                 >
                   View
                 </Link>
-                <Link
+                {/* <Link
                   className="btn btn-outline-warning"
                   to={`edit/${post.id}`}
                 >
                   Edit
-                </Link>
-                <button
+                </Link> */}
+                {/* <button
                   className="btn btn-outline-danger"
                   type="delete"
                   onClick={() => handleDelete(post.id)}
