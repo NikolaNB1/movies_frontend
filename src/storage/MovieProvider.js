@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { addMovie, getMovies } from "../service/moviesService";
+import { useState } from "react";
+import { addMovie } from "../service/moviesService";
 import MoviesContext from "./MoviesContext";
 
 const MovieProvider = ({ children }) => {

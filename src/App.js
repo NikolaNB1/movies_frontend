@@ -9,6 +9,7 @@ import UserContext from "./storage/UserContext";
 import SignIn from "./register/SignIn";
 import Home from "./components/Home";
 import ShowSingleMovie from "./components/ShowSingleMovie";
+import AddMovie from "./components/AddMovie";
 
 function App() {
   const movieContext = useContext(MoviesContext);
@@ -29,6 +30,7 @@ function App() {
       <Route path="/register" element={<SignUp />}></Route>
       <Route path="/login" element={<SignIn />}></Route>
       <Route path="/movies/:id" element={<ShowSingleMovie />}></Route>
+      <Route path="/add" element={<AddMovie />}></Route>
     </Routes>
   );
 }

@@ -26,19 +26,17 @@ const Heading = () => {
         >
           <span className="fs-4">Movies app</span>
         </Link>
-
         <ul className="nav nav-pills">
-          {/* <li className="nav-item">
-            <Link to="/add" className="nav-link" aria-current="page">
-              Add Movie
-            </Link>
-          </li> */}
-
           {signedIn ? (
             <>
               <li className="nav-item">
                 <Link to="/movies" className="nav-link" aria-current="page">
                   Movies
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link to="/add" className="nav-link" aria-current="page">
+                  Add Movie
                 </Link>
               </li>
               <li>
