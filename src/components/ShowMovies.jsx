@@ -32,12 +32,12 @@ const ShowMovies = () => {
                 >
                   View
                 </Link>
-                {/* <Link
+                <Link
                   className="btn btn-outline-warning"
-                  to={`edit/${post.id}`}
+                  to={`edit/${movie.id}`}
                 >
                   Edit
-                </Link> */}
+                </Link>
                 {/* <button
                   className="btn btn-outline-danger"
                   type="delete"

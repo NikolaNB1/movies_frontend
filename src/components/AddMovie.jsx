@@ -1,10 +1,14 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { addMovie } from "../service/moviesService";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  addMovie,
+  editMovieById,
+  getMovieById,
+} from "../service/moviesService";
 
 const AddMovie = () => {
   const navigate = useNavigate();
-  const [movies, setMovies] = useState({
+  const [movie, setMovie] = useState({
     title: "",
     director: "",
     image_url: "",
@@ -13,52 +17,65 @@ const AddMovie = () => {
     genre: "",
   });
 
+  const { id } = useParams();
+
+  useEffect(() => {
+    if (id) {
+      getMovieById(id).then(({ data }) => {
+        setMovie(data);
+      });
+    }
+  }, [id]);
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (movies.title.length === 0) {
+    if (movie.title.length === 0) {
       return alert(`Polje Title ne moze biti prazno`);
     }
-    if (movies.director.length === 0) {
+    if (movie.director.length === 0) {
       return alert(`Polje Director ne moze biti prazno`);
     }
-    if (movies.image_url.length === 0) {
+    if (movie.image_url.length === 0) {
       return alert(`Polje Image url mora biti url`);
     }
-    if (movies.duration.length === 0) {
+    if (movie.duration.length === 0) {
       return alert(`Polje Duration ne moze biti prazno`);
     }
-    if (movies.duration < 1 || movies.duration > 300) {
+    if (movie.duration < 1 || movie.duration > 300) {
       return alert(`Polje Duration mora biti izmedju 1 i 300 minuta`);
     }
-    if (movies.release_date.length === 0) {
+    if (movie.release_date.length === 0) {
       return alert(`Polje Release date ne moze biti prazno`);
     }
-    if (movies.genre.length === 0) {
+    if (movie.genre.length === 0) {
       return alert(`Polje Genre ne moze biti prazno`);
     }
-
-    addMovie(
-      movies.title,
-      movies.director,
-      movies.image_url,
-      movies.duration,
-      movies.release_date,
-      movies.genre
-    );
-    setMovies({
-      title: "",
-      director: "",
-      image_url: "",
-      duration: "",
-      release_date: "",
-      genre: "",
-    });
+    if (id) {
+      editMovieById(id, movie);
+    } else {
+      addMovie(
+        movie.title,
+        movie.director,
+        movie.image_url,
+        movie.duration,
+        movie.release_date,
+        movie.genre
+      );
+      setMovie({
+        title: "",
+        director: "",
+        image_url: "",
+        duration: "",
+        release_date: "",
+        genre: "",
+      });
+    }
     navigate("/");
   };
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setMovies((prevState) => ({
+    setMovie((prevState) => ({
       ...prevState,
       [name]: value,
     }));
@@ -69,12 +86,12 @@ const AddMovie = () => {
       <form
         className="container mt-5"
         style={{ width: "300px" }}
-        onSubmit={(event) => handleSubmit(event, movies)}
+        onSubmit={(event) => handleSubmit(event, movie)}
       >
         <div className="form-floating mt-3">
           <input
             name="title"
-            value={movies.title}
+            value={movie.title}
             type="text"
             className="form-control"
             onChange={handleInputChange}
@@ -85,7 +102,7 @@ const AddMovie = () => {
         <div className="form-floating mt-3">
           <input
             name="director"
-            value={movies.director}
+            value={movie.director}
             type="text"
             className="form-control"
             onChange={handleInputChange}
@@ -96,7 +113,7 @@ const AddMovie = () => {
         <div className="form-floating mt-3">
           <input
             name="image_url"
-            value={movies.image_url}
+            value={movie.image_url}
             type="url"
             className="form-control"
             onChange={handleInputChange}
@@ -107,7 +124,7 @@ const AddMovie = () => {
         <div className="form-floating mt-3">
           <input
             name="duration"
-            value={movies.duration}
+            value={movie.duration}
             type="number"
             className="form-control"
             onChange={handleInputChange}
@@ -118,7 +135,7 @@ const AddMovie = () => {
         <div className="form-floating mt-3">
           <input
             name="release_date"
-            value={movies.release_date}
+            value={movie.release_date}
             type="date"
             className="form-control"
             onChange={handleInputChange}
@@ -128,7 +145,7 @@ const AddMovie = () => {
         <div className="form-floating mt-3">
           <input
             name="genre"
-            value={movies.genre}
+            value={movie.genre}
             type="text"
             className="form-control"
             onChange={handleInputChange}
@@ -137,13 +154,23 @@ const AddMovie = () => {
           <label>Genre</label>
         </div>
         <div>
-          <button
-            className="w-100 btn btn-lg btn-success mt-3"
-            type="submit"
-            onClick={handleSubmit}
-          >
-            Add
-          </button>
+          {id ? (
+            <button
+              className="w-100 btn btn-lg btn-warning mt-3"
+              type="submit"
+              onClick={handleSubmit}
+            >
+              Edit
+            </button>
+          ) : (
+            <button
+              className="w-100 btn btn-lg btn-success mt-3"
+              type="submit"
+              onClick={handleSubmit}
+            >
+              Add
+            </button>
+          )}
         </div>
       </form>
     </div>

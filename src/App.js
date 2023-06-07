@@ -31,6 +31,7 @@ function App() {
       <Route path="/login" element={<SignIn />}></Route>
       <Route path="/movies/:id" element={<ShowSingleMovie />}></Route>
       <Route path="/add" element={<AddMovie />}></Route>
+      <Route path="/movies/edit/:id" element={<AddMovie />}></Route>
     </Routes>
   );
 }
