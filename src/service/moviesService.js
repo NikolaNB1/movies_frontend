@@ -1,7 +1,7 @@
 import { API } from "../shared/api";
 
-export const getMovies = () => {
-  return API.get("/movies");
+export const getMovies = (currentPage) => {
+  return API.get(`/movies?page=${currentPage}`);
 };
 
 export const addMovie = (

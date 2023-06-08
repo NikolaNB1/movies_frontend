@@ -1,74 +1,142 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import MoviesContext from "../storage/MoviesContext";
 import { deleteMovieById, getMovies } from "../service/moviesService";
 import { Link, useNavigate } from "react-router-dom";
 import UserContext from "../storage/UserContext";
 
 const ShowMovies = () => {
+  const [currentPage, setCurrentPage] = useState(1);
   const { movies, updateMovie } = useContext(MoviesContext);
   const { signedIn } = useContext(UserContext);
   const navigate = useNavigate();
 
   useEffect(() => {
-    getMovies().then(({ data }) => {
-      updateMovie(data);
+    getMovies(currentPage).then(({ data }) => {
+      updateMovie(data.data);
     });
     if (!signedIn) {
       navigate("/login");
     }
-  }, []);
+  }, [currentPage]);
 
   const handleDelete = (id) => {
     if (signedIn) {
       deleteMovieById(id);
-      getMovies().then(({ data }) => {
-        updateMovie(data);
+      getMovies(currentPage).then(({ data }) => {
+        updateMovie(data.data);
       });
+    }
+  };
+
+  const goToPreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const goToNextPage = () => {
+    if (currentPage < 6) {
+      setCurrentPage(currentPage + 1);
     }
   };
 
   return (
     <div className="container">
+      <nav aria-label="Page navigation example">
+        <ul className="pagination">
+          <li className="page-item">
+            <button
+              className="page-link"
+              onClick={goToPreviousPage}
+              disabled={currentPage === 1}
+            >
+              Previous
+            </button>
+          </li>
+          <li className="page-item">
+            <span className="page-link">Page {currentPage}</span>
+          </li>
+          <li className="page-item">
+            <button
+              className="page-link"
+              onClick={goToNextPage}
+              disabled={currentPage === 6}
+            >
+              Next
+            </button>
+          </li>
+        </ul>
+      </nav>
       <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        {movies?.map((movie, id) => (
-          <div key={id} className="col m-5" style={{ width: "340px" }}>
-            <div className="card shadow-sm">
-              <div className="card-body bg-light border rounded border">
-                <h3 className="card-text">{movie.title}</h3>
-                <div className="mb-1 text-body-secondary">
-                  Director: {movie.director}
-                </div>
-                <p className="card-text mb-auto">
-                  Release date: {movie.release_date}
-                </p>
-                <div
-                  style={{ display: "flex", justifyContent: "space-evenly" }}
-                >
-                  <Link
-                    className="btn btn-outline-success"
-                    to={`/movies/${movie.id}`}
-                  >
-                    View
-                  </Link>
-                  <Link
-                    className="btn btn-outline-warning"
-                    to={`edit/${movie.id}`}
-                  >
-                    Edit
-                  </Link>
-                  <button
-                    className="btn btn-outline-danger"
-                    type="delete"
-                    onClick={() => handleDelete(movie.id)}
-                  >
-                    Delete
-                  </button>
+        {Array.isArray(movies)
+          ? movies.map((movie, id) => (
+              <div key={id} className="col m-5" style={{ width: "340px" }}>
+                <div className="card shadow-sm">
+                  <div className="card-body bg-light border rounded border">
+                    <h3 className="card-text">{movie.title}</h3>
+                    <div className="mb-1 text-body-secondary">
+                      Director: {movie.director}
+                    </div>
+                    <p className="card-text mb-auto">
+                      Release date: {movie.release_date}
+                    </p>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-evenly",
+                      }}
+                    >
+                      <Link
+                        className="btn btn-outline-success"
+                        to={`/movies/${movie.id}`}
+                      >
+                        View
+                      </Link>
+                      <Link
+                        className="btn btn-outline-warning"
+                        to={`edit/${movie.id}`}
+                      >
+                        Edit
+                      </Link>
+                      <button
+                        className="btn btn-outline-danger"
+                        type="delete"
+                        onClick={() => handleDelete(movie.id)}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-        ))}
+            ))
+          : null}
       </div>
+      <nav aria-label="Page navigation example">
+        <ul className="pagination">
+          <li className="page-item">
+            <button
+              className="page-link"
+              onClick={goToPreviousPage}
+              disabled={currentPage === 1}
+            >
+              Previous
+            </button>
+          </li>
+          <li className="page-item">
+            <span className="page-link">Page {currentPage}</span>
+          </li>
+          <li className="page-item">
+            <button
+              className="page-link"
+              onClick={goToNextPage}
+              disabled={currentPage === 6}
+            >
+              Next
+            </button>
+          </li>
+        </ul>
+      </nav>
     </div>
   );
 };
