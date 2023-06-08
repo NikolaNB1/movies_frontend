@@ -6,6 +6,7 @@ import UserContext from "../storage/UserContext";
 
 const ShowMovies = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [lastPage, setLastPage] = useState(1);
   const { movies, updateMovie } = useContext(MoviesContext);
   const { signedIn } = useContext(UserContext);
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ const ShowMovies = () => {
   useEffect(() => {
     getMovies(currentPage).then(({ data }) => {
       updateMovie(data.data);
+      setLastPage(data.last_page);
     });
     if (!signedIn) {
       navigate("/login");
@@ -24,6 +26,7 @@ const ShowMovies = () => {
       deleteMovieById(id);
       getMovies(currentPage).then(({ data }) => {
         updateMovie(data.data);
+        setLastPage(data.last_page);
       });
     }
   };
@@ -35,7 +38,8 @@ const ShowMovies = () => {
   };
 
   const goToNextPage = () => {
-    if (currentPage < 6) {
+    console.log(lastPage);
+    if (currentPage < lastPage) {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -130,7 +134,7 @@ const ShowMovies = () => {
             <button
               className="page-link"
               onClick={goToNextPage}
-              disabled={currentPage === 6}
+              disabled={currentPage === lastPage}
             >
               Next
             </button>
