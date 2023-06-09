@@ -38,7 +38,7 @@ const ShowMovies = () => {
   };
 
   const goToNextPage = () => {
-    console.log(lastPage);
+    // console.log(lastPage);
     if (currentPage < lastPage) {
       setCurrentPage(currentPage + 1);
     }
@@ -46,7 +46,10 @@ const ShowMovies = () => {
 
   return (
     <div className="container">
-      <nav aria-label="Page navigation example">
+      <nav
+        className="d-flex justify-content-center"
+        aria-label="Page navigation example"
+      >
         <ul className="pagination">
           <li className="page-item">
             <button
@@ -77,6 +80,13 @@ const ShowMovies = () => {
               <div key={id} className="col m-5" style={{ width: "340px" }}>
                 <div className="card shadow-sm">
                   <div className="card-body bg-light border rounded border">
+                    <img
+                      src={movie.image_url}
+                      className="card-img-top"
+                      alt={`${movie.title}`}
+                      width="100"
+                      height="300"
+                    />
                     <h3 className="card-text">{movie.title}</h3>
                     <div className="mb-1 text-body-secondary">
                       Director: {movie.director}
@@ -116,7 +126,10 @@ const ShowMovies = () => {
             ))
           : null}
       </div>
-      <nav aria-label="Page navigation example">
+      <nav
+        className="d-flex justify-content-center"
+        aria-label="Page navigation example"
+      >
         <ul className="pagination">
           <li className="page-item">
             <button

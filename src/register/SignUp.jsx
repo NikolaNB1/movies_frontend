@@ -34,7 +34,7 @@ const SignUp = () => {
       <form
         onSubmit={(e) => {
           handleSubmit(e);
-          navigate("/signin");
+          navigate("/login");
         }}
         className="container "
         style={{ width: "500px" }}

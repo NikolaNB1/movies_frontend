@@ -1,15 +1,13 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   addMovie,
   editMovieById,
   getMovieById,
 } from "../service/moviesService";
-import UserContext from "../storage/UserContext";
 
 const AddMovie = () => {
   const navigate = useNavigate();
-  const { signedIn } = useContext(UserContext);
   const [movie, setMovie] = useState({
     title: "",
     director: "",
@@ -26,9 +24,6 @@ const AddMovie = () => {
       getMovieById(id).then(({ data }) => {
         setMovie(data);
       });
-    }
-    if (!signedIn) {
-      navigate("/login");
     }
   }, [id]);
 
